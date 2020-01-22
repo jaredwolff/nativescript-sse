@@ -9,7 +9,7 @@ export class SSE extends BaseSSE {
   constructor(url: string, headers: any = {}) {
     super(url, headers);
     this.events = fromObject({});
-    this._url = url;
+    this._url = NSURL.URLWithString(url);
     this._headers = NSDictionary.alloc().initWithDictionary(headers);
     this._es = EventSource.alloc().initWithUrlHeaders(this._url, this._headers);
     const ref = new WeakRef(this);
@@ -20,14 +20,6 @@ export class SSE extends BaseSSE {
         object: fromObject({
           event: event,
           message: { data: data, lastEventId: id }
-        })
-      });
-    });
-    this._es.onError(err => {
-      owner.events.notify({
-        eventName: 'onError',
-        object: fromObject({
-          error: err.localizedDescription
         })
       });
     });
@@ -60,7 +52,7 @@ export class SSE extends BaseSSE {
   }
   public connect(): void {
     if (!this._es) return;
-    this._es.connect();
+    this._es.connectWithLastEventId(null);
   }
   public close(): void {
     if (!this._es) return;
