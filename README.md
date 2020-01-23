@@ -28,3 +28,13 @@ sse.events.on('onError', (data) => {
 });
 see.close();
 ```
+
+
+## Building
+
+Building this plugin requires a few important steps. Clone and then follow these steps:
+
+1. `npm install` in the `src` directory.
+1. `npm install` in the `publish` directory.
+1. `cd publish`
+1. `./pack.sh`
